@@ -171,55 +171,51 @@ if predict:
     )[0]
 
     default_prob = probability[1] * 100
+    if default_prob >= 70:
+        risk_level = "HIGH"
+
+    elif default_prob >= 40:
+        risk_level = "MEDIUM"
+
+    else:
+        risk_level = "LOW"
 
     st.divider()
 
     st.subheader("Prediction Result")
+    c1, c2, c3, c4 = st.columns(4)
 
-    c1, c2, c3 = st.columns(3)
-
-    c1.metric(
-        "Income",
-        f"${income:,.0f}"
-    )
-
-    c2.metric(
-        "Loan Amount",
-        f"${loan_amount:,.0f}"
-    )
-
-    c3.metric(
-        "Credit Score",
-        credit_score
-    )
-
+    c1.metric("Income", f"${income:,.0f}")
+    c2.metric("Loan Amount", f"${loan_amount:,.0f}")
+    c3.metric("Credit Score", credit_score)
+    c4.metric("Risk Level", risk_level)
     st.write("")
 
-    if prediction == 1:
+    if default_prob >= 40:
 
         st.markdown(
-            f"""
-            <div class='high-risk'>
-            ❌ LOAN REJECTED
-            <br><br>
-            Default Risk: {default_prob:.2f}%
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
+        f"""
+        <div class='high-risk'>
+        ❌ LOAN REJECTED
+        <br><br>
+        Default Risk: {default_prob:.2f}%
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
     else:
 
         st.markdown(
-            f"""
-            <div class='low-risk'>
-            ✅ LOAN APPROVED
-            <br><br>
-            Default Risk: {default_prob:.2f}%
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
+        f"""
+        <div class='low-risk'>
+        ✅ LOAN APPROVED
+        <br><br>
+        Default Risk: {default_prob:.2f}%
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
     st.write("")
 
